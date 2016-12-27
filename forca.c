@@ -48,10 +48,13 @@ void desenhaforca(char* palavrasecreta, char* chutes, int tentativas) {
 
 }
 
+void escolhepalavra(char* palavrasecreta) {
+	sprintf(palavrasecreta, "MELANCIA");
+}
+
 int main() {
 
-	char palavrasecreta[20];
-	sprintf(palavrasecreta, "MELANCIA");
+	char palavrasecreta[20];	
 
 	int acertou = 0;
 	int enforcou = 0;
@@ -60,6 +63,7 @@ int main() {
 	int tentativas = 0;
 
 	abertura();
+	escolhepalavra(palavrasecreta);
 
 	do {
 
