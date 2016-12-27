@@ -6,6 +6,27 @@ char palavrasecreta[20];
 char chutes[26];
 int tentativas = 0;
 
+int enforcou() {
+	int erros = 0;
+
+	int i = 0;
+	for(; i < tentativas; i++) {
+		int existe = 0;
+
+		int j = 0;
+		for(; j < strlen(palavrasecreta); j++) {
+			if(chutes[i] == palavrasecreta[j]) {
+				existe = 1;
+				break;
+			}
+		}
+
+		if(!existe) erros++;
+	}
+
+	return erros >= 5;
+}
+
 void abertura() {
 	printf("/****************/\n");
 	printf("/ Jogo de Forca */\n");
@@ -60,7 +81,6 @@ void escolhepalavra() {
 int main() {
 
 	int acertou = 0;
-	int enforcou = 0;
 
 	abertura();
 	escolhepalavra();
@@ -70,6 +90,6 @@ int main() {
 		desenhaforca();
 		chuta();
 
-	} while (!acertou && !enforcou);
+	} while (!acertou && !enforcou());
 
 }
