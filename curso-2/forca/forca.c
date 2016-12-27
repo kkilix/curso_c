@@ -5,29 +5,37 @@
 #include "forca.h"
 
 // variáveis globais
-char palavrasecreta[20];
+char palavrasecreta[TAMANHO_PALAVRA];
 char chutes[26];
 int chutesdados = 0;
 
-int enforcou() {
-	int erros = 0;
+
+int letraexiste(char letra) {
+	int j = 0;
+    for(; j < strlen(palavrasecreta); j++) {
+        if(letra == palavrasecreta[j]) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+int chuteserrados() {
+    int erros = 0;
 
 	int i = 0;
 	for(; i < chutesdados; i++) {
-		int existe = 0;
-
-		int j = 0;
-		for(; j < strlen(palavrasecreta); j++) {
-			if(chutes[i] == palavrasecreta[j]) {
-				existe = 1;
-				break;
-			}
-		}
-
-		if(!existe) erros++;
+		if(!letraexiste(chutes[i])) {
+        	erros++;
+        }
 	}
 
-	return erros >= 5;
+    return erros;
+}
+
+int enforcou() {
+	return chuteserrados() >= 5;
 }
 
 void abertura() {
@@ -71,12 +79,20 @@ int ganhou() {
 }
 
 void desenhaforca() {
+	int erros = chuteserrados();
 
-	printf("Você já deu %d chutes\n", chutesdados);
-	
+	printf("  _______       \n");
+	printf(" |/      |      \n");
+	printf(" |      %c%c%c  \n", (erros>=1?'(':' '), (erros>=1?'_':' '), (erros>=1?')':' '));
+	printf(" |      %c%c%c  \n", (erros>=3?'\\':' '), (erros>=2?'|':' '), (erros>=3?'/': ' '));
+	printf(" |       %c     \n", (erros>=2?'|':' '));
+	printf(" |      %c %c   \n", (erros>=4?'/':' '), (erros>=4?'\\':' '));
+	printf(" |              \n");
+	printf("_|___           \n");
+	printf("\n\n");
+
 	int i = 0;
 	for(; i < strlen(palavrasecreta); i++) {
-
 		if(jachutou(palavrasecreta[i])) {
 			printf("%c ", palavrasecreta[i]);
 		} else {
@@ -84,8 +100,8 @@ void desenhaforca() {
 		}
 
 	}
-	printf("\n");
 
+	printf("\n");
 }
 
 void escolhepalavra() {
@@ -118,7 +134,7 @@ void adicionapalavra() {
 	scanf(" %c", &quer);
 
 	if(quer == 'S') {
-		char novapalavra[20];
+		char novapalavra[TAMANHO_PALAVRA];
 
 		printf("Digite a nova palavra, em letras maiúsculas: ");
 		scanf("%s", novapalavra);
@@ -142,7 +158,6 @@ void adicionapalavra() {
 
 		fclose(f);
 	}
-
 }
 
 int main() {
