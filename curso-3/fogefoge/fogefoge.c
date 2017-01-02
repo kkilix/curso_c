@@ -1,44 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "fogefoge.h"
+#include "mapa.h"
 
 // variáveis globais
 MAPA m;
-int i;
 
-void lemapa() {
-	FILE* f;
-	f = fopen("mapa.txt", "r");
-	if(f == 0) {
-		printf("Erro na leitura do mapa");
-		exit(1);
-	}
-
-	fscanf(f, "%d %d", &(m.linhas), &(m.colunas));
-	alocamapa();
-	
-	for(i = 0; i < 5; i++) {
-		fscanf(f, "%s", m.matriz[i]);
-	}
-
-	fclose(f);
-}
-
-void alocamapa() {
-	m.matriz = malloc(sizeof(char*) * m.linhas);
-
-	for(i = 0; i < m.linhas; i++) {
-		m.matriz[i] = malloc(sizeof(char) * m.colunas + 1);
-	}
-}
-
-void liberamapa() {	
-	for(i = 0; i < m.linhas; i++) {
-		free(m.matriz[i]);
-	}
-
-	free(m.matriz);
-}
 
 int acabou() {
 	return 0;
@@ -47,10 +14,11 @@ int acabou() {
 void move(char direcao) {
 	int x;
 	int y;
-	int j;
-
-	for(i = 0; i < m.linhas; i++) {
-		for(j = 0; j < m.colunas; j++) {
+		
+	int i = 0;
+	for(; i < m.linhas; i++) {
+		int j = 0;
+		for(; j < m.colunas; j++) {
 			if(m.matriz[i][j] == '@') {
 				x = i;
 				y = j;
@@ -77,19 +45,13 @@ void move(char direcao) {
 	m.matriz[x][y] = '.';
 }
 
-void imprimemapa() {
-	for(i = 0; i < m.linhas; i++) {
-		printf("%s\n", m.matriz[i]);
-	}
-}
-
 
 int main() {
 
-	lemapa();
+	lemapa(&m);
 
 	do {
-		imprimemapa();
+		imprimemapa(&m);
 
 		char comando;
 		scanf(" %c", &comando);
@@ -97,6 +59,6 @@ int main() {
 		move(comando);
 	} while (!acabou());
 
-	liberamapa();
+	liberamapa(&m);
 
 }
