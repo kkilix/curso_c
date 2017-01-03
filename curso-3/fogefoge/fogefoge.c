@@ -1,10 +1,11 @@
-// para compildar gcc fogefoge.c mapa.c -o fogefoge.out -std=c99
+// para compildar gcc fogefoge.c mapa.c ui.c -o fogefoge.out -std=c99
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include "fogefoge.h"
 #include "mapa.h"
+#include "ui.h"
 
 // variáveis globais
 MAPA m;
@@ -108,10 +109,14 @@ void fantasmas() {
 }
 
 void explodepilula() {
+	if(!tempilula) return;
+
     explodepilula2(heroi.x, heroi.y, 0, 1, 3);
     explodepilula2(heroi.x, heroi.y, 0, -1, 3);
     explodepilula2(heroi.x, heroi.y, 1, 0, 3);
     explodepilula2(heroi.x, heroi.y, -1, 0, 3);
+
+	tempilula = 0;
 }
 
 void explodepilula2(int x, int y, int somax, int somay, int qtd) {
