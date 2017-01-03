@@ -44,15 +44,33 @@ void move(char direcao) {
 			break;
 	}
 
-	if(!ehValida(&m, proximox, proximoy))
+	if(!ehvalida(&m, proximox, proximoy))
 		return;
 
-	if(!ehVazia(&m, proximox, proximoy))
+	if(!ehvazia(&m, proximox, proximoy))
 		return;
 
 	andanomapa(&m, heroi.x, heroi.y, proximox, proximoy);
 	heroi.x = proximox;
 	heroi.y = proximoy;
+}
+
+void fantasmas() {
+	MAPA copia;
+
+	copiamapa(&copia, &m);
+
+	for(int i = 0; i < copia.linhas; i++) {
+		for(int j = 0; j < copia.colunas; j++) {
+			if(copia.matriz[i][j] == FANTASMA) {
+				if(ehvalida(&m, i, j+1) && ehvazia(&m, i, j+1)) {
+					andanomapa(&m, i, j, i, j+1);
+				}
+			}
+		}
+	}
+
+	liberamapa(&copia);
 }
 
 
@@ -68,6 +86,7 @@ int main() {
 		scanf(" %c", &comando);
 
 		move(comando);
+		fantasmas();
 	} while (!acabou());
 
 	liberamapa(&m);
